@@ -1,0 +1,26 @@
+[
+{
+"name": "Realistic",
+"promptAddition": "The style of realism describes an art movement that aims to depict reality as accurately and faithfully as possible"
+},
+{
+"name": "Photographic",
+"promptAddition": "In photography, refers to a recognizable group of features that appear in a variety of photographs and reflect a particular visual or conceptual approach."
+},
+{
+"name": "Minimalistic",
+"promptAddition": "Everything superfluous is removed to create a clear and concise structure."
+},
+{
+"name": "Surrealistic",
+"promptAddition": "Surrealist works are often rich in symbols that refer to the unconscious and inner world of the artist."
+},
+{
+"name": "Cinematic",
+"promptAddition": "The chosen means create a certain aesthetic and atmosphere that distinguishes the film from others. These include the visual design, the emotional impact, and the narrative style."
+},
+{
+"name": "Portrait", 
+"promptAddition": "In art, a portrait style refers to the different ways in which a portrait can be created, both in painting and photography."
+}
+]

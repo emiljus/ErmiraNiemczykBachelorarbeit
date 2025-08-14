@@ -1,0 +1,26 @@
+[
+  {
+    "id": "bib",
+    "name": "Bibliothek",
+    "promptAddition": "Modern university library with study pods, open reading areas and glass study rooms"
+  },
+  {
+    "id": "ferchau",
+    "name": "Ferchau Gebäude",
+    "promptAddition":"Corporate building with modern workspaces and meeting rooms"
+  },
+  {
+    "id": "haupt",
+    "name": "Hauptgebäude",
+    "promptAddition":  "Central administrative building with lecture halls and offices"  },
+  {
+    "id": "hoersaal",
+    "name": "Hörsaal",
+    "promptAddition": "University lecture hall with tiered seating and presentation technology"
+  },
+  {
+    "id": "outdoor",
+    "name": "Outdoor Bereich",
+    "promptAddition": "Campus outdoor areas with green spaces and seating"
+  }
+]

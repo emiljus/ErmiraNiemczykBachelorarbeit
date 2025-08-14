@@ -1,0 +1,68 @@
+{
+  "bib": [
+    {"name": "bib 1",
+    "preview": "bib13.jpg",
+    "promptAddition": "A modern library interior with a wooden service kiosk, featuring a digital screen and a closed shutter window. Shelves with books are visible on the left"
+    },
+    {"name": "bib 2",
+    "preview": "bib7.jpg",
+    "promptAddition": "The small, functionally furnished room is dominated by two white tables with black metal legs, accompanied by four black chairs. The gray-blue walls create a calm atmosphere. A monitor and whiteboard suggest a work or meeting area."
+    },
+    {"name": "bib 3",
+    "preview": "bib15.jpg",
+    "promptAddition": "Colorful, semi-private study or meeting booths with bright orange and yellow padded walls, creating a vibrant and focused working atmosphere."
+    }
+  ],
+  "ferchau": [
+    {"name": "ferchau 1", 
+    "preview": "fer1.jpg",
+    "promptAddition": "The bright lecture hall is dominated by white walls, interrupted by large black windows with slender metal frames on the right and rear sides. The lecturer stands at the lectern in front of him, with a monitor in front of him. The auditorium comprises seven rows of ten chairs each, accommodating up to 70 people. Two projectors mounted on the ceiling provide modern presentation technology."
+    },
+    {"name": "ferchau 2",
+    "preview": "fer2.jpg",
+    "promptAddition": "A wide-angle view of a modern university lecture hall, seen from the entrance door positioned on the left side of the room. The hall features bright white walls, interrupted by floor-to-ceiling black-framed windows with thin metal edges along the back and right walls. Rows of dark chairs (seven rows, ten chairs each) face the front, where a wooden podium with an embedded monitor stands. Two ceiling-mounted projectors aim toward the podium. The composition emphasizes depth, with the door frame partially visible on the left edge. Clean, academic aesthetic with neutral lighting."
+  },
+    {"name": "ferchau 3",
+    "preview": "fer3.jpg",
+    "promptAddition": "A university lecture hall viewed from the back row, looking toward the front. The lecturer’s podium (with a small embedded monitor) stands centered in the distance. Only the right wall is visible, featuring floor-to-ceiling black-framed windows with thin metal edges. Seven long rows of dark chairs (10 per row) recede toward the podium. Two ceiling-mounted projectors are barely visible from this angle. The left wall is out of frame, emphasizing the asymmetrical composition. Stark, academic atmosphere with soft light from the windows."
+    }
+  ],
+  "haupt": [
+    {"name": "haupt 1", 
+    "preview": "hau1.jpg",
+    "promptAddition": "Large grid window (5x8, thick black top/bottom frames). View onto campus: Gray building (orange shades, 3 floors) on right, 2x longer than left. Light paved path with central tree line."
+    },
+    {"name": "haupt 2",
+    "preview": "hau2.jpg",
+    "promptAddition": "Bright study office: Large light table center, 6 tall stools (3 left/3 right). Wall: 3 horizontal KALLAX shelves with colorful bins, topped by black pinboard with sticky notes. Adjacent: geometric pyramid shelf made of cubes."
+}
+  ],
+  "hoersaal": [
+    {"name": "hoersaal 1",
+    "preview": "hor1.jpg",
+    "promptAddition": ""
+    },
+    {"name": "hoersaal 2",
+    "preview": "hor2.jpg",
+    "promptAddition": ""
+    },
+    {"name": "hoersaal 3",
+    "preview": "hor3.jpg",
+    "promptAddition": ""
+    } 
+  ],
+  "outdoor": [
+    {"name": "outdoor 1",
+    "preview": "out1.jpg",
+    "promptAddition": ""
+    },
+    {"name": "outdoor 2",
+    "preview": "out2.jpg",
+    "promptAddition": ""
+    },
+    {"name": "outdoor 3",
+    "preview": "out3.jpg",
+    "promptAddition": ""
+    }
+  ]
+}

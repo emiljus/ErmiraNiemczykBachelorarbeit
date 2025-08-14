@@ -1,0 +1,23 @@
+
+[
+{
+"name": "Seminar",
+"promptAddition": "university seminar room with small group (5-15 realistic people) actively discussing digital media projects, led by a professor or tutor – showing interaction, whiteboards with tech diagrams, laptops displaying code/designs."
+},
+{
+"name": "Vorlesung",
+"promptAddition": "large university lecture hall with tiered seating, professor presenting digital topics via projection screen – students taking notes on laptops/tablets, cinematic view from back rows."
+},
+{
+"name": "Gruppenarbeit",
+"promptAddition": "media informatics student team (3-5 realistic people) collaborating in campus lab or lounge: mixed ethnicity group prototyping apps, 3D modeling on screens, storyboarding VR experiences."
+},
+{
+"name": "Lernen",
+"promptAddition": "focused individual studying in media lab/library: close-up on student with noise-cancelling headphones analyzing data visualizations or debugging code, textbooks and dual monitors."
+},
+{
+"name": "Pause",
+"promptAddition": "informal student break scenario: friends relaxing on campus lawn with coffee/tablets, discussing projects between classes – mix of laughter and tech gadgets visible."
+}
+]

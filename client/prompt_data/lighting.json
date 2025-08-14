@@ -1,0 +1,22 @@
+[
+{
+"name": "Golden Hour Lighting",
+"promptAddition":"is the time shortly after sunrise and shortly before sunset when the sunlight is soft, warm and reddish."
+},
+{
+"name": "Studio Light" ,
+"promptAddition": "the light refers to the use of artificial light sources in a photographic studio to create images"
+},
+{
+"name": "Soft Light" ,
+"promptAddition": "Soft light is a type of lighting created by a diffuse light source that does not cast harsh shadows on the subject"
+},
+{
+"name": "Ambient Light", 
+"promptAddition": "Ambient light is the general lighting of a room that provides sufficient brightness to allow easy orientation and movement."
+},
+{
+"name": "Backlighting", 
+"promptAddition": "Backlighting in photography refers to a lighting technique where the main light source is positioned behind the subject, illuminating it from the back."
+}
+]

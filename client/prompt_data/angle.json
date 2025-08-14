@@ -1,0 +1,50 @@
+[
+{
+"name": "Bird's Eye View",
+"promptAddition": "A bird's-eye view refers to an elevated, downward-looking perspective, similar to what a bird might see while flying overhead"
+},
+{
+"name": "High Angle",
+"promptAddition": "A camera perspective in which the camera is positioned above the subject and films or photographs downwards." 
+},
+{
+"name": "Eye Level",
+"promptAddition": "A camera angle that positions the lens at the same height as the subject's eyes, creating a neutral and relatable perspective for the viewer" 
+},
+{
+"name": "Low Angle",
+"promptAddition": "A camera perspective in which the camera is positioned above the subject and films or photographs downwards."
+},
+{
+"name": "Aerial View",
+"promptAddition": "It is a perspective taken from above of a terrain or object, typically from an airplane, helicopter, drone, or other aircraft."
+},
+{
+"name": "Over the Shoulder",
+"promptAddition": "A film shot in which the camera is positioned behind a person so that their shoulder and part of their head are in the foreground, while the main person, who is in focus, is in the background."
+},
+{
+"name": "First Person View",
+"promptAddition": "refers to a representation in which the camera is positioned as if it were the eyes of a character."
+},
+{
+"name": "Back View",
+"promptAddition": "The rear view in the picture perspective refers to the representation of a subject from behind, with the back of the subject in the foreground."
+},
+{
+"name": "Side View",
+"promptAddition": "The side view perspective refers to the view of an object viewed from the side, with the camera positioned at a right angle to the object"
+},
+{
+"name": "Wide Shot",
+"promptAddition": " A long shot is a camera angle that captures an entire scene, including the subject's surroundings"
+},
+{
+"name": "Close Up",
+"promptAddition": "Close-up is a type of photography or filming that shows an object or part of it from a very close distance."
+},
+{
+"name": "Macro Shot",
+"promptAddition": "extreme close-up, in which a subject is shown larger in the photo than in reality"
+}
+]

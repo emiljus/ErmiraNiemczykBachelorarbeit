@@ -1,0 +1,339 @@
+/* Schriftarten importieren */
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&family=Anonymous+Pro:wght@400;700&display=swap');
+
+body {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 20px;
+    background: linear-gradient(to left, #854424, #c35621, #F89651);
+    margin: 0;
+    padding: 20px;
+    color: #000000;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(133, 68, 36, 0.4);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: 'Prompt', sans-serif;
+    font-size: 26px;
+    color: #854424;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* Modusauswahl */
+.mode-selector {
+    display: flex;
+    margin-bottom: 25px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(133, 68, 36, 0.2);
+    border: 1px solid #c35621;
+}
+
+.mode-selector button {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    background-color: #ffffff;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    font-family: 'Prompt', sans-serif;
+    color: #854424;
+}
+
+.mode-selector button:hover {
+    background-color: #F89651;
+    color: white;
+}
+
+.mode-selector button.active {
+    background-color: #c35621;
+    color: white;
+    font-weight: bold;
+}
+
+/* Formulargruppen */
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #854424;
+    font-family: 'Prompt', sans-serif;
+}
+
+.dropdown {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #c35621;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
+    color: #000000;
+    transition: border-color 0.3s;
+}
+
+.dropdown:focus {
+    border-color: #F89651;
+    outline: none;
+}
+
+/* Reihen-Layout */
+.row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    flex: 1;
+}
+
+.full-width {
+    flex: 0 0 100%;
+}
+
+/* Dropdown mit Hilfe-Icon */
+.dropdown-with-help {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.help-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: #F89651;
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.help-btn:hover {
+    background: #854424;
+    transform: scale(1.1);
+}
+
+/* Quadratische Raumvorschau */
+.form-group.with-preview {
+    display: grid;
+    grid-template-columns: 1fr 160px; /* Breite für Vorschau anpassen */
+    gap: 20px;
+    align-items: center;
+}
+
+#room-preview {
+    width: 160px; /* Quadratische Abmessungen */
+    height: 160px;
+    border: 3px solid #F89651;
+    border-radius: 6px;
+    overflow: hidden;
+    grid-row: span 2;
+    background-color: rgba(248, 150, 81, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#room-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Checkbox-Gruppe */
+.checkbox-group {
+    margin: 25px 0;
+    padding: 20px;
+    border: 2px solid #F89651;
+    border-radius: 8px;
+    background-color: rgba(248, 150, 81, 0.1);
+}
+
+.checkbox-group legend {
+    font-weight: bold;
+    padding: 0 8px;
+    color: #854424;
+    font-family: 'Prompt', sans-serif;
+    font-size: 22px;
+}
+
+.checkbox-group label {
+    display: block;
+    margin: 12px 0;
+    padding-left: 32px;
+    position: relative;
+    font-weight: normal;
+    cursor: pointer;
+    color: #000000;
+}
+
+.checkbox-group input[type="checkbox"] {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 20px;
+    height: 20px;
+    accent-color: #c35621;
+}
+
+/* Textareas */
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #c35621;
+    border-radius: 6px;
+    resize: vertical;
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #000000;
+}
+
+/* Image-to-Image Parameter */
+#i2i-params {
+    background-color: rgba(248, 150, 81, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border-left: 5px solid #F89651;
+}
+
+.form-group input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
+    accent-color: #c35621;
+}
+
+/* Preview und Button */
+#prompt-preview {
+    margin: 25px 0;
+    padding: 20px;
+    background-color: rgba(248, 150, 81, 0.1);
+    border-left: 5px solid #c35621;
+    font-style: italic;
+    border-radius: 8px;
+    color: #000000;
+    line-height: 1.6;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    background: #F89651;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    transition: background 0.3s;
+    font-family: 'Prompt', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background: #c35621;
+}
+
+/* Result Container */
+#result-container {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px;
+    border-top: 2px solid #F89651;
+}
+
+/* Utility Klassen */
+.hidden {
+    display: none !important;
+}
+
+/* Stil für Perspektiven-Links */
+.perspective-link {
+    color: #c35621;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: bold;
+}
+
+.perspective-link:hover {
+    color: #854424;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+        font-size: 18px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .form-group.with-preview {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Quadratische Vorschau für Mobile */
+    #room-preview {
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%; /* Quadratisches Verhältnis */
+        position: relative;
+    }
+    
+    #room-preview img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .dropdown-with-help {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .help-btn {
+        margin-top: 8px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+}

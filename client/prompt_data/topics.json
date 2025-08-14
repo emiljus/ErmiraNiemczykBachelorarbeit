@@ -1,0 +1,22 @@
+[
+{
+"name": "Mensch-Computer-Interaktion",
+"promptAddition": "Combines UX/UI design, interaction principles, and usability testing to create intuitive digital interfaces. Focuses on user behavior, accessibility, and prototyping tools (e.g., Figma, Adobe XD)."
+},
+{
+"name": "Full-Stack Development",
+"promptAddition": "Covers end-to-end software creation: frontend (HTML/CSS/JavaScript frameworks), backend (APIs, databases), and deployment. Emphasizes agile workflows, version control (Git), and testing."
+},
+{
+"name": "Data-Driven-Media",
+"promptAddition": "Applies machine learning, computer vision, and data visualization to automate tasks, analyze media content, or generate insights (e.g., recommendation systems, image recognition)."
+},
+{
+"name": "Software Entwicklung",
+"promptAddition": "Focuses on scalable architectures, secure coding practices, and system design. Includes DevOps, encryption, and threat modeling for robust applications."
+},
+{
+"name": "Projektmanagment",
+"promptAddition": "Bridges technical execution and leadership: pitching ideas, interdisciplinary teamwork, and managing digital projects with lean/agile methods."
+}
+]

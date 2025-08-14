@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Bildperspektiven – Erklärung</title>
+  <link rel="stylesheet" href="style.css"> 
+  <style>
+    .perspektiven-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    .perspektive-block {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1rem;
+    }
+
+    .perspektive-block h3 {
+      margin-bottom: 0.5rem;
+      color: #e45b00;
+    }
+
+    .perspektive-block img {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 10px;
+      margin: 0.5rem 0;
+    }
+
+    .prompt-addition {
+      font-style: italic;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="perspektiven-container">
+    <h1>Bildperspektiven</h1>
+
+    <!-- Jede Perspektive als Link mit Parameter -->
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=Bird'sEyeView" class="perspective-link">Bird's Eye View</a></h3>
+      <img src="/Bildperspektive/birdseye.jpg" alt="Bird's Eye View Beispielbild">
+      <p class="prompt-addition">A bird's-eye view refers to an elevated, downward-looking perspective, similar to what a bird might see while flying overhead</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=HighAngle" class="perspective-link">High Angle</a></h3>
+      <img src="/Bildperspektive/high angle.jpeg" alt="High Angle Beispielbild">
+      <p class="prompt-addition">A camera perspective in which the camera is positioned above the subject and films or photographs downwards./p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=EyeLevel" class="perspective-link">Eye Level</a></h3>     
+      <img src="/Bildperspektive/eyelevelshot.jpg" alt="Eye Level Beispielbild">
+      <p class="prompt-addition">A camera angle that positions the lens at the same height as the subject's eyes, creating a neutral and relatable perspective for the viewer</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=LowAngle" class="perspective-link">Low Angle</a></h3>     
+      <img src="/Bildperspektive/lowangle.png" alt="Low Angle Beispielbild">
+      <p class="prompt-addition">A camera perspective in which the camera is positioned above the subject and films or photographs downwards.</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=AerialView" class="perspective-link">Aerial View</a></h3>     
+      <img src="/Bildperspektive/aerial-shot.jpg" alt="Aerial View Beispielbild">
+      <p class="prompt-addition">It is a perspective taken from above of a terrain or object, typically from an airplane, helicopter, drone, or other aircraft.</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=OverTheShoulder" class="perspective-link">Over the Shoulder</a></h3>     
+      <img src="/Bildperspektive/overshoulder.jpg" alt="Over the Shoulder Beispielbild">
+      <p class="prompt-addition">A film shot in which the camera is positioned behind a person so that their shoulder and part of their head are in the foreground, while the main person, who is in focus, is in the background</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=FirstPersonView" class="perspective-link">First Person View</a></h3>     
+      <img src="/Bildperspektive/firstpersonview.jpg" alt="First Person View Beispielbild">
+      <p class="prompt-addition">Refers to a representation in which the camera is positioned as if it were the eyes of a character</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=BackView" class="perspective-link">Back View</a></h3>     
+      <img src="/Bildperspektive/backview.jpg" alt="Back View Beispielbild">
+      <p class="prompt-addition">The rear view in the picture perspective refers to the representation of a subject from behind, with the back of the subject in the foreground.</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=SideView" class="perspective-link">Side View</a></h3>     
+      <img src="/Bildperspektive/sideview.jpg" alt="Side View Beispielbild">
+      <p class="prompt-addition">The side view perspective refers to the view of an object viewed from the side, with the camera positioned at a right angle to the object</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=WideShot" class="perspective-link">Wide Shot</a></h3>     
+      <img src="/Bildperspektive/wideshot.png" alt="Wide Shot Beispielbild">
+      <p class="prompt-addition">A long shot is a camera angle that captures an entire scene, including the subject's surrounding</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=CloseUp" class="perspective-link">Close Up</a></h3>     
+      <img src="/Bildperspektive/closeup.jpg" alt="Close Up Beispielbild">
+      <p class="prompt-addition">Close-up is a type of photography or filming that shows an object or part of it from a very close distance.</p>
+    </div>
+
+    <div class="perspektive-block">
+      <h3><a href="hauptseite.html?perspective=MacroShot" class="perspective-link">Macro Shot</a></h3>     
+      <img src="/Bildperspektive/macroshot.jpeg" alt="Macro Shot Beispielbild">
+      <p class="prompt-addition">extreme close-up, in which a subject is shown larger in the photo than in reality.</p>
+    </div>
+    
+  </div>
+
+    <script>
+    // CSS-Klasse für die Links hinzufügen
+    document.querySelectorAll('.perspektive-block h3').forEach(h3 => {
+      const link = document.createElement('a');
+      link.href = `index.html?perspective=${h3.textContent.replace(/\s+/g, '').toLowerCase()}`;
+      link.className = 'perspective-link';
+      link.innerHTML = h3.innerHTML;
+      h3.innerHTML = '';
+      h3.appendChild(link);
+    });
+  </script>
+
+</body>
+</html>
