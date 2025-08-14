@@ -14,12 +14,11 @@ const styleSelect = document.getElementById('style-select');
 const situationSelect = document.getElementById('situations-select');
 const topicSelect = document.getElementById('topic-select');
 const userIdeasInput = document.getElementById('user-ideas');
-const negativePromptInput = document.getElementById('negative-prompt')
+const negativePromptInput = document.getElementById('negative-prompt'); // ID korrigiert
 const promptPreview = document.getElementById('prompt-preview');
 const resultContainer = document.getElementById('result-container');
 const form = document.getElementById('prompt-form');
-const roomSelection = document.getElementById('room-selection');
-const imageStrengthGroup = document.getElementById('image-strength-group');
+const generatedPromptText = document.getElementById('generated-prompt-text'); // Neu hinzugefügt
 
 // Globale Variablen
 let buildings = [];
@@ -31,12 +30,7 @@ let situations = [];
 let topics = [];
 let currentBuilding = null;
 let currentRoom = null;
-let currentMode = 'text'; // 'text' oder 'image'
-let currentAngle = null;
-let currentLighting = null;
-let currentStyle = null;
-let currentSituation = null;
-let currentTopic = null;
+let currentMode = 'text'; // Standardmodus
 
 // Moduswechsel
 textModeBtn.addEventListener('click', () => {
@@ -54,9 +48,7 @@ function setMode(mode) {
     
     i2iParams.classList.toggle('hidden', mode === 'text');
     roomGroup.classList.toggle('hidden', mode === 'text');
-    roomSelection.classList.toggle('hidden', mode === 'text');
-    imageStrengthGroup.classList.toggle('hidden', mode === 'text'); 
-
+    
     updatePromptPreview();
 }
 
@@ -69,11 +61,6 @@ imageStrength.addEventListener('input', () => {
 // JSON-Daten laden
 async function loadDropdownData() {
     try {
-        if (!buildingSelect || !roomSelect || !angleSelect || 
-            !lightingSelect || !styleSelect || !situationSelect || !topicSelect) {
-            throw new Error('Required dropdown elements not found');
-        }
-
         // Gebäude laden
         const buildingResponse = await fetch('/prompt_data/buildings.json');
         if (!buildingResponse.ok) throw new Error('Could not load buildings');
@@ -106,7 +93,7 @@ async function loadDropdownData() {
         });
         
         // Beleuchtungen laden
-        const lightingResponse = await fetch('prompt_data/lighting.json');
+        const lightingResponse = await fetch('/prompt_data/lighting.json');
         if (!lightingResponse.ok) throw new Error('Could not load lighting');
         lightings = await lightingResponse.json();
         
@@ -119,7 +106,7 @@ async function loadDropdownData() {
         });
         
         // Stile laden
-        const styleResponse = await fetch('prompt_data/styles.json');
+        const styleResponse = await fetch('/prompt_data/styles.json');
         if (!styleResponse.ok) throw new Error('Could not load styles');
         styles = await styleResponse.json();
         
@@ -132,7 +119,7 @@ async function loadDropdownData() {
         });
 
         // Situationen laden
-        const situationsResponse = await fetch('prompt_data/situations.json');
+        const situationsResponse = await fetch('/prompt_data/situations.json');
         if (!situationsResponse.ok) throw new Error('Could not load situations');
         situations = await situationsResponse.json();
         
@@ -145,7 +132,7 @@ async function loadDropdownData() {
         });
         
         // Themen laden
-        const topicResponse = await fetch('prompt_data/topics.json');
+        const topicResponse = await fetch('/prompt_data/topics.json');
         if (!topicResponse.ok) throw new Error('Could not load topics');
         topics = await topicResponse.json();
         
@@ -181,12 +168,14 @@ buildingSelect.addEventListener('change', () => {
             roomSelect.appendChild(option);
         });
         
-        roomPreview.src = 'images/logo.png';
+        roomPreview.src = '/images/logo.png';
     } else {
         roomSelect.innerHTML = '<option value="">Bitte zuerst Gebäude auswählen</option>';
         roomSelect.disabled = true;
+        currentRoom = null;
     }
     
+    updateRoomPreview();
     updatePromptPreview();
 });
 
@@ -197,92 +186,108 @@ roomSelect.addEventListener('change', () => {
     if (currentBuilding && roomName) {
         const buildingRooms = rooms[currentBuilding.id] || [];
         currentRoom = buildingRooms.find(r => r.name === roomName);
-        
-        if (currentRoom) {
-            updateRoomPreview();
-        }
+    } else {
+        currentRoom = null;
     }
     
+    updateRoomPreview();
     updatePromptPreview();
 });
 
 // Raumvorschau aktualisieren
 function updateRoomPreview() {
     if (currentBuilding && currentRoom && currentRoom.preview) {
-        roomPreview.src = `i2i/${currentBuilding.id}/${currentRoom.preview}`;
+        roomPreview.src = `/i2i/${currentBuilding.id}/${currentRoom.preview}`;
     } else {
-        roomPreview.src = 'images/logo.png';
+        roomPreview.src = '/images/logo.png';
     }
 }
 
-// Globale Variablen synchronisieren
-function syncGlobals() {
-    currentAngle = angleSelect.value ? angles.find(a => a.name === angleSelect.value) : null;
-    currentLighting = lightingSelect.value ? lightings.find(l => l.name === lightingSelect.value) : null;
-    currentStyle = styleSelect.value ? styles.find(s => s.name === styleSelect.value) : null;
-    currentSituation = situationSelect.value ? situations.find(s => s.name === situationSelect.value) : null;
-    currentTopic = topicSelect.value ? topics.find(t => t.name === topicSelect.value) : null;
-}
-
-// Formular-Handler
+// Formular-Handler (KORRIGIERT)
 function handleFormSubmit(e) {
     e.preventDefault();
-    syncGlobals();
 
-    if (!currentBuilding || !currentAngle || !currentLighting || 
-        !currentStyle || !currentSituation || !currentTopic) {
+    const angle = angleSelect.value;
+    const lighting = lightingSelect.value;
+    const style = styleSelect.value;
+    const situation = situationSelect.value;
+    const topic = topicSelect.value;
+    const userIdeas = userIdeasInput.value.trim();
+    const negativePrompt = negativePromptInput.value.trim();
+
+    // Validierung der Pflichtfelder
+    if (!angle || !lighting || !style || !situation || !topic) {
         showError('Bitte wählen Sie alle erforderlichen Optionen aus');
         return;
     }
-    
-    if (currentMode === 'image' && !currentRoom) {
-        showError('Bitte wählen Sie einen Raum für den Image-Modus');
+
+    // Zusätzliche Validierung für Bildmodus
+    if (currentMode === 'image' && (!currentBuilding || !currentRoom)) {
+        showError('Bitte wählen Sie ein Gebäude und einen Raum aus');
         return;
     }
 
-    let prompt = `${currentBuilding.promptAddition}`;
-    
-    if (currentRoom) prompt += ` - ${currentRoom.promptAddition}`;
-    prompt += `, ${currentAngle.promptAddition}`;
-    prompt += `, ${currentLighting.promptAddition}`;
-    prompt += `, Stil: ${currentStyle.promptAddition}`;
-    prompt += `, Situationen: ${currentSituation.promptAddition}`;
-    prompt += `, Thema: ${currentTopic.promptAddition}`;
+    // Finde die ausgewählten Objekte
+    const currentAngleObj = angles.find(a => a.name === angle);
+    const currentLightingObj = lightings.find(l => l.name === lighting);
+    const currentStyleObj = styles.find(s => s.name === style);
+    const currentSituationObj = situations.find(p => p.name === situation);
+    const currentTopicObj = topics.find(t => t.name === topic);
 
-    const userIdeas = userIdeasInput.value.trim();
+    if (!currentAngleObj || !currentLightingObj || !currentStyleObj || !currentSituationObj || !currentTopicObj) {
+        showError('Ein oder mehrere ausgewählte Elemente wurden nicht gefunden');
+        return;
+    }
+
+    // Prompt zusammenbauen
+    let prompt = '';
+    
+    // Gebäude und Raum nur im Bildmodus hinzufügen
+    if (currentMode === 'image' && currentBuilding && currentRoom) {
+        prompt += `${currentBuilding.promptAddition} - ${currentRoom.promptAddition}, `;
+    }
+    
+    prompt += `${currentAngleObj.promptAddition}`;
+    prompt += `, ${currentLightingObj.promptAddition}`;
+    prompt += `, Stil: ${currentStyleObj.promptAddition}`;
+    prompt += `, Situationen: ${currentSituationObj.promptAddition}`;
+    prompt += `, Thema: ${currentTopicObj.promptAddition}`;
+
     if (userIdeas) {
-        prompt += `, The Image should contain the following:  ${userIdeas}`;
+        prompt += `, The Image should contain the following: ${userIdeas}`;
     }
     
-    const negativePrompts = negativePromptInput.value.trim();
-    if(negativePrompts) {
-        prompt += `, The Image should not contain the following: ${negativePrompts}`;
-    }
-
-    if (currentMode === 'image') {
-        prompt += `, Bild-zu-Bild (Stärke: ${imageStrength.value})`;
+    if (negativePrompt) {
+        prompt += `, The Image should not contain the following: ${negativePrompt}`;
     }
     
     generateImage(prompt);
 }
 
-// Bildgenerierung
 async function generateImage(prompt) {
     const generationData = {
         prompt: prompt,
         mode: currentMode
     };
 
-    if (currentMode === 'image' && currentBuilding && currentRoom) {
-        generationData.imagePath = `${currentBuilding.id}/${currentRoom.preview}`;
-        generationData.image_strength = parseFloat(imageStrength.value);
-    }
-
-    resultContainer.innerHTML = '<div class="loading">Bild wird generiert...</div>';
+    // Ergebniscontainer vorbereiten
+    resultContainer.classList.remove('hidden');
+    resultContainer.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Bild wird generiert...</p>
+        </div>
+    `;
     
     const button = form.querySelector('button');
     button.disabled = true;
     button.textContent = 'Wird generiert...';
+
+    // Bildmodus-spezifische Parameter
+    if (currentMode === 'image' && currentBuilding && currentRoom) {
+        generationData.imagePath = `${currentBuilding.id}/${currentRoom.preview}`;
+        generationData.image_strength = parseFloat(imageStrength.value);
+    }
 
     try {
         const response = await fetch('/api/generate', {
@@ -291,21 +296,62 @@ async function generateImage(prompt) {
             body: JSON.stringify(generationData)
         });
 
-        if (!response.ok) throw new Error('Server error: ' + response.status);
+        // Debugging-Hilfe
+        const rawResponse = await response.clone().text();
+        console.log("Raw API Response:", rawResponse);
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `Serverfehler (${response.status})`);
+        }
 
         const data = await response.json();
+        console.log("API Response Data:", data);
         
         if (data.imageUrl) {
-            resultContainer.innerHTML = `
-                <img id="generated-image" src="${data.imageUrl}" alt="Generiertes Bild">
-                <div class="image-info">Prompt: ${prompt}</div>
+            // Element sicher referenzieren
+            const generatedPromptElement = document.getElementById('generated-prompt-text');
+            
+            // Ergebnis-HTML erstellen
+            const resultHTML = `
+                <div class="result-images">
+                    <div class="result-image-wrapper">
+                        <img class="result-image" src="${data.imageUrl}" alt="Generiertes Bild">
+                        <img class="download-icon" src="/images/download-icon.png" alt="Download">
+                    </div>
+                </div>
+                <div class="result-prompt">
+                    <strong>Generierter Prompt:</strong>
+                    <p>${prompt}</p>
+                </div>
             `;
+            
+            resultContainer.innerHTML = resultHTML;
+            
+            // Download-Funktion
+            document.querySelector('.download-icon').addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.href = data.imageUrl;
+                link.download = 'generiertes-bild.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+            
+            // Falls spezielles Element existiert, Prompt setzen
+            if (generatedPromptElement) {
+                generatedPromptElement.textContent = prompt;
+            } else {
+                console.warn('Element #generated-prompt-text nicht gefunden');
+            }
+        } else if (data.error) {
+            showError(data.error);
         } else {
-            showError(data.error || 'Unbekannter Fehler bei der Generierung');
+            showError('Kein Bild in der Antwort erhalten');
         }
     } catch (error) {
         console.error('Fehler:', error);
-        showError('Serverfehler aufgetreten: ' + error.message);
+        showError('Serverfehler: ' + error.message);
     } finally {
         button.disabled = false;
         button.textContent = 'Generieren';
@@ -314,34 +360,45 @@ async function generateImage(prompt) {
 
 // Prompt-Vorschau aktualisieren
 function updatePromptPreview() {
-    syncGlobals();
-    
-    const buildingId = buildingSelect.value;
+    const angle = angleSelect.value;
+    const lighting = lightingSelect.value;
+    const style = styleSelect.value;
+    const situation = situationSelect.value;
+    const topic = topicSelect.value;
     const userIdeas = userIdeasInput.value.trim();
-    const negativePrompts = negativePromptInput.value.trim();
-    const selectedBuilding = buildingId ? buildings.find(b => b.id === buildingId) : null;
+    const negativePrompt = negativePromptInput.value.trim();
 
     let preview = '';
     
-    if (buildingId && currentAngle && currentLighting && currentStyle && currentSituation && currentTopic) {
-        preview = `Photorealistic Illustration: ${selectedBuilding.promptAddition}`;
-        
-        if (userIdeas) {
-            preview += `, The Image should contain the following:  ${userIdeas}`;
-        }
+    if (angle && lighting && style && situation && topic) {
+        const currentAngleObj = angles.find(a => a.name === angle);
+        const currentLightingObj = lightings.find(l => l.name === lighting);
+        const currentStyleObj = styles.find(s => s.name === style);
+        const currentSituationObj = situations.find(p => p.name === situation);
+        const currentTopicObj = topics.find(t => t.name === topic);
 
-        if (negativePrompts) {
-            preview += `, The Image should not contain the following: ${negativePrompts}`;
-        }
-        
-        preview += `, ${currentAngle.promptAddition}`;
-        preview += `, ${currentLighting.promptAddition}`;
-        preview += `, Stil: ${currentStyle.promptAddition}`;
-        preview += `, Situationen: ${currentSituation.promptAddition}`;
-        preview += `, Thema: ${currentTopic.promptAddition}`;
-        
-        if (currentMode === 'image') {
-            preview += `, Bild-zu-Bild (Stärke: ${imageStrength.value})`;
+        // Nur Objekte verwenden, wenn sie gefunden wurden
+        if (currentAngleObj && currentLightingObj && currentStyleObj && currentSituationObj && currentTopicObj) {
+            // Gebäude und Raum nur im Bildmodus hinzufügen
+            if (currentMode === 'image' && currentBuilding && currentRoom) {
+                preview += `${currentBuilding.promptAddition} - ${currentRoom.promptAddition}, `;
+            }
+            
+            preview += `${currentAngleObj.promptAddition}`;
+            preview += `, ${currentLightingObj.promptAddition}`;
+            preview += `, Stil: ${currentStyleObj.promptAddition}`;
+            preview += `, Situationen: ${currentSituationObj.promptAddition}`;
+            preview += `, Thema: ${currentTopicObj.promptAddition}`;
+
+            if (userIdeas) {
+                preview += `, The Image should contain the following: ${userIdeas}`;
+            }
+
+            if (negativePrompt) {
+                preview += `, The Image should not contain the following: ${negativePrompt}`;
+            }
+        } else {
+            preview = 'Ein oder mehrere ausgewählte Elemente wurden nicht gefunden';
         }
     } else {
         preview = 'Bitte wählen Sie alle erforderlichen Optionen aus';
@@ -352,113 +409,26 @@ function updatePromptPreview() {
 
 // Fehler anzeigen
 function showError(message) {
+    resultContainer.classList.remove('hidden');
     resultContainer.innerHTML = `<div class="error">Fehler: ${message}</div>`;
 }
 
 // Event-Listener initialisieren
 function initEventListeners() {
     // Dropdown-Änderungen
-    buildingSelect.addEventListener('change', updatePromptPreview);
-    roomSelect.addEventListener('change', updatePromptPreview);
     angleSelect.addEventListener('change', updatePromptPreview);
     lightingSelect.addEventListener('change', updatePromptPreview);
     styleSelect.addEventListener('change', updatePromptPreview);
     situationSelect.addEventListener('change', updatePromptPreview);
     topicSelect.addEventListener('change', updatePromptPreview);
-    
-    // Textfelder
     userIdeasInput.addEventListener('input', updatePromptPreview);
     negativePromptInput.addEventListener('input', updatePromptPreview);
-    
+    buildingSelect.addEventListener('change', updatePromptPreview);
+    roomSelect.addEventListener('change', updatePromptPreview);
+    imageStrength.addEventListener('input', updatePromptPreview);
+
     // Formular abschicken
     form.addEventListener('submit', handleFormSubmit);
-}
-
-function handleUrlParameters() {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  const params = [
-    { key: 'perspective', setter: (value) => setDropdownValue('angle', value) },
-    { key: 'stilrichtung', setter: (value) => setDropdownValue('style', value) },
-    { key: 'licht', setter: (value) => setDropdownValue('lighting', value) },
-    { key: 'situation', setter: (value) => setDropdownValue('situation', value) },
-    { key: 'thema', setter: (value) => setDropdownValue('topic', value) }
-  ];
-  
-  let needsUpdate = false;
-  
-  params.forEach(param => {
-    const value = urlParams.get(param.key);
-    if (value) {
-      param.setter(value);
-      needsUpdate = true;
-    }
-  });
-  
-  if (needsUpdate) {
-    updatePromptPreview();
-    
-    setTimeout(() => {
-      document.getElementById('prompt-form').scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  }
-}
-
-// Hilfsfunktion zum Setzen von Dropdown-Werten
-function setDropdownValue(type, value) {
-  let selectElement, collection;
-  
-  switch (type) {
-    case 'angle':
-      selectElement = angleSelect;
-      collection = angles;
-      break;
-    case 'style':
-      selectElement = styleSelect;
-      collection = styles;
-      break;
-    case 'lighting':
-      selectElement = lightingSelect;
-      collection = lightings;
-      break;
-    case 'situation':
-      selectElement = situationSelect;
-      collection = situations;
-      break;
-    case 'topic':
-      selectElement = topicSelect;
-      collection = topics;
-      break;
-    default:
-      return;
-  }
-  
-  const normalizedValue = value.toLowerCase().replace(/\s+/g, '');
-  const foundItem = collection.find(item => 
-    item.name.toLowerCase().replace(/\s+/g, '') === normalizedValue
-  );
-  
-  if (foundItem) {
-    selectElement.value = foundItem.name;
-    
-    switch (type) {
-      case 'angle':
-        currentAngle = foundItem;
-        break;
-      case 'style':
-        currentStyle = foundItem;
-        break;
-      case 'lighting':
-        currentLighting = foundItem;
-        break;
-      case 'situation':
-        currentSituation = foundItem;
-        break;
-      case 'topic':
-        currentTopic = foundItem;
-        break;
-    }
-  }
 }
 
 // Initialisierung
@@ -467,9 +437,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadDropdownData();
         setMode('text');
         initEventListeners();
-        handleUrlParameters();
         updateRoomPreview();
+        updatePromptPreview();
+        
+        // Ergebniscontainer initial verstecken
+        resultContainer.classList.add('hidden');
     } catch (error) {
         console.error('Initialisierungsfehler:', error);
+        showError('Initialisierungsfehler: ' + error.message);
     }
 });

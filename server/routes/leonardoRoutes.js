@@ -122,20 +122,49 @@ async function waitForGenerationResult(generationId) {
       });
 
       const statusData = response.data;
-      const generation = statusData.generations_by_pk;
       
-      if (!generation) {
-        throw new Error('Generierungsdaten nicht gefunden');
-      }
-
-      if (generation.status === 'COMPLETE') {
-        if (generation.generated_images?.length > 0) {
-          console.log('Generierung erfolgreich abgeschlossen');
-          return generation.generated_images[0].url;
+      // DEBUGGING: Logge die gesamte API-Antwort
+      console.log('API-Antwort:', JSON.stringify(statusData, null, 2));
+      
+      // NEU: Aktuelle API-Struktur verarbeiten
+      if (statusData.generations_by_pk) {
+        const generation = statusData.generations_by_pk;
+        
+        if (!generation) {
+          throw new Error('Generierungsdaten nicht gefunden');
         }
-        throw new Error('Keine Bilder in der Antwort');
-      } else if (generation.status === 'FAILED') {
-        throw new Error('Generierung fehlgeschlagen');
+
+        if (generation.status === 'COMPLETE') {
+          if (generation.generated_images?.length > 0) {
+            console.log('Generierung erfolgreich abgeschlossen');
+            return generation.generated_images.map(img => img.url);
+          }
+          throw new Error('Keine Bilder in der Antwort');
+        } else if (generation.status === 'FAILED') {
+          throw new Error('Generierung fehlgeschlagen');
+        }
+      } 
+      // ALTERNATIVE: Neue API-Struktur
+      else if (statusData.generation && statusData.generation.generated_images) {
+        const generation = statusData.generation;
+        
+        if (generation.status === 'COMPLETE') {
+          if (generation.generated_images?.length > 0) {
+            console.log('Generierung erfolgreich abgeschlossen (neue Struktur)');
+            return generation.generated_images.map(img => img.url);
+          }
+          throw new Error('Keine Bilder in der Antwort');
+        } else if (generation.status === 'FAILED') {
+          throw new Error('Generierung fehlgeschlagen');
+        }
+      }
+      // FALLBACK: Direkter Zugriff auf Bilder
+      else if (statusData.generated_images?.length > 0) {
+        console.log('Generierung erfolgreich abgeschlossen (Fallback)');
+        return statusData.generated_images.map(img => img.url);
+      } 
+      else {
+        throw new Error('Unbekannte API-Antwortstruktur');
       }
     } catch (error) {
       console.log(`Abfrageversuch ${attempt} fehlgeschlagen: ${error.message}`);
@@ -154,6 +183,11 @@ router.post('/generate', async (req, res) => {
       image_strength 
     } = req.body;
 
+    // Sicherheitscheck für imagePath
+    if (imagePath && (imagePath.includes('../') || imagePath.startsWith('/')) ){
+      throw new Error('Ungültiger Bildpfad');
+    }
+
     let init_image_id = null;
     if (mode === 'image' && imagePath) {
       console.log('Lade Bild vom Server:', imagePath);
@@ -163,6 +197,10 @@ router.post('/generate', async (req, res) => {
         
         console.log('Vollständiger Pfad:', fullPath);
         console.log('Existiert Datei?', fs.existsSync(fullPath));
+        
+        if (!fs.existsSync(fullPath)) {
+          throw new Error('Bilddatei nicht gefunden');
+        }
         
         const imageBuffer = fs.readFileSync(fullPath);
         const mimeType = imagePath.endsWith('.png') ? 'image/png' : 'image/jpeg';
@@ -208,10 +246,15 @@ router.post('/generate', async (req, res) => {
 
     console.log('Generation gestartet, ID:', generationId);
     
-    const imageUrl = await waitForGenerationResult(generationId);
-    console.log('Bild erfolgreich generiert:', imageUrl);
+    // KORREKTUR: Erhalten eines Arrays von URLs
+    const imageUrls = await waitForGenerationResult(generationId);
+    console.log('Bilder erfolgreich generiert:', imageUrls);
 
-    res.json({ imageUrl });
+    // KORREKTUR: Rückgabe der ersten Bild-URL
+    res.json({
+      success: true, 
+      imageUrl: imageUrls[0] // Erstes Bild aus dem Array
+    });
   } catch (error) {
     console.error('Leonardo API Fehler:', {
       status: error.response?.status,
@@ -221,8 +264,9 @@ router.post('/generate', async (req, res) => {
     });
     
     res.status(500).json({ 
+      success: false,
       error: 'Bildgenerierung fehlgeschlagen',
-      details: error.response?.data?.error || error.message
+      details: error.message
     });
   }
 });
